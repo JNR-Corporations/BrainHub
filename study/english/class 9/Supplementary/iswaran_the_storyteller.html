@@ -1014,7 +1014,7 @@
             const theme = data.theme || "light";
             document.documentElement.dataset.theme = theme;
             const metaTheme = document.querySelector('meta[name="theme-color"]');
-            if (metaTheme) metaTheme.setAttribute("content", theme === "dark" ? "#121722" : "#2563eb");
+            if (metaTheme) metaTheme.setAttribute("content", theme === "dark" ? "#121722" : "#ffffff");
         }
 
         // ==========================================
