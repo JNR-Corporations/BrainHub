@@ -3112,7 +3112,7 @@
             document.documentElement.dataset.theme = state.theme === "dark" ? "dark" : "light";
             $("#themeBtn i").className = `fa-solid ${state.theme === "dark" ? "fa-sun" : "fa-moon"}`;
             // Meta tag color dynamically switch karne ke liye
-            $('meta[name="theme-color"]').setAttribute('content', state.theme === "dark" ? "#121722" : "#2563eb");
+            $('meta[name="theme-color"]').setAttribute('content', state.theme === "dark" ? "#121722" : "#ffffff");
         }
         // Global toggle aur close control handler for Central FAB Menu
         function toggleFab(event) {
