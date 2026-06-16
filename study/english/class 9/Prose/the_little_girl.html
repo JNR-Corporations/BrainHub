@@ -11,14 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="manifest" href="../../../../manifest.json">
-    <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#121722" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#121722" media="(prefers-color-scheme: dark)">
-
-    <link rel="manifest" href="../../../../manifest.json">
-    <link rel="apple-touch-icon" href="../../../../icon-192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../../../../icon-192.png">
 
     <style>
         :root {
@@ -32,11 +26,11 @@
             --primary: #2563eb;
             --primary-light: rgba(37, 99, 235, 0.06);
             --shadow: 0 16px 36px rgba(31, 45, 61, 0.05);
-            --soft: 0 6px 16px rgba(31, 45, 61, 0.03);
             --radius: 16px;
             --radius-sm: 12px;
             --nav-h: 56px;
             --accent-green: #10b981;
+            --accent-red: #ef4444;
             --accent-orange: #f59e0b;
         }
 
@@ -51,7 +45,6 @@
             --primary: #60a5fa;
             --primary-light: rgba(96, 165, 250, 0.1);
             --shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-            --soft: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         * {
@@ -66,19 +59,24 @@
             min-height: 100vh;
             background: var(--bg);
             color: var(--text);
-            padding-bottom: 30px;
+            /* Immersive Bottom status/gesture safe layout calculation */
+            padding-bottom: calc(30px + env(safe-area-inset-bottom));
         }
 
-        /* Nav Framework */
+        /* Nav framework modified for full device top immersion */
         nav {
-            height: var(--nav-h);
+            height: calc(var(--nav-h) + env(safe-area-inset-top));
             background: var(--panel);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--line);
             display: flex;
-            align-items: center;
-            padding: 0 16px;
+            align-items: flex-end;
+            /* Notch areas ke safe side pe display handle karne ke liye */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: 11px;
+            padding-left: calc(16px + env(safe-area-inset-left));
+            padding-right: calc(16px + env(safe-area-inset-right));
             position: sticky;
             top: 0;
             z-index: 100;
@@ -107,28 +105,23 @@
             transition: all 0.2s ease;
         }
 
-        .back-link:hover {
-            background: var(--line);
-            transform: translateX(-2px);
-        }
-
         .nav-left h1 {
             font-size: 16px;
             font-weight: 800;
-            letter-spacing: -0.3px;
         }
 
-        /* Desktop Optimization & Fluid Container */
+        /* Container fluid properties mapping landscape safe regions */
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 12px;
+            padding-left: calc(12px + env(safe-area-inset-left));
+            padding-right: calc(12px + env(safe-area-inset-right));
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
 
-        /* Hero Element Setup */
         .chapter-hero {
             background: var(--panel-solid);
             border: 1px solid var(--line);
@@ -147,14 +140,11 @@
             border-radius: 30px;
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
 
         .chapter-hero h2 {
             font-size: 20px;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
             margin-bottom: 6px;
         }
 
@@ -164,7 +154,6 @@
             line-height: 1.45;
         }
 
-        /* Core Card Panels Structure */
         .panel {
             background: var(--panel-solid);
             border: 1px solid var(--line);
@@ -196,10 +185,8 @@
         .panel-title h3 {
             font-size: 14.5px;
             font-weight: 800;
-            letter-spacing: -0.2px;
         }
 
-        /* Language Controls Group */
         .lang-switch-box {
             display: flex;
             background: var(--panel-2);
@@ -225,7 +212,6 @@
             color: #ffffff;
         }
 
-        /* Text Engine Architecture (Optimized for Android Screens) */
         .summary-content-area {
             font-size: 13.5px;
             line-height: 1.6;
@@ -235,93 +221,190 @@
         .summary-paragraph {
             margin-bottom: 10px;
             text-align: justify;
-            animation: textFadeIn 0.25s ease-out;
         }
 
-        /* Layout Component Stacks */
-        .qa-stack,
-        .quiz-stack {
+        /* Quiz UI Layouts */
+        .quiz-arena-box {
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            min-height: 190px;
+        }
+
+        .quiz-meta-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .quiz-question-text {
+            font-size: 13.5px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .quiz-options-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .quiz-opt-btn {
+            background: var(--panel-solid);
+            border: 1px solid var(--line);
+            padding: 11px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .quiz-opt-btn.correct-state {
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: var(--accent-green) !important;
+            color: var(--accent-green) !important;
+        }
+
+        .quiz-opt-btn.wrong-state {
+            background: rgba(239, 68, 68, 0.12) !important;
+            border-color: var(--accent-red) !important;
+            color: var(--accent-red) !important;
+        }
+
+        .quiz-action-footer {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-feedback-banner {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .quiz-next-action-btn {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .quiz-score-layout {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .quiz-score-layout i {
+            font-size: 32px;
+            color: var(--accent-orange);
+            margin-bottom: 10px;
+        }
+
+        /* Q&A Accordion Matrix */
+        .qa-stack {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .qa-card,
-        .quiz-card {
+        .qa-card {
             background: var(--panel-2);
             border: 1px solid var(--line);
             border-radius: var(--radius-sm);
             padding: 12px;
-            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
         }
 
-        .qa-question,
-        .quiz-question {
+        .qa-question {
             font-size: 13.5px;
             font-weight: 700;
-            color: var(--text);
             display: flex;
-            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
             line-height: 1.4;
-            margin-bottom: 8px;
         }
 
-        .qa-question span,
-        .quiz-question span {
+        .qa-question span {
             color: var(--primary);
             font-weight: 800;
         }
 
         .qa-answer {
             font-size: 12.5px;
-            line-height: 1.5;
             color: var(--muted);
             padding-left: 14px;
-            border-left: 2px solid var(--line);
-        }
-
-        /* --- New Interactive Sections Options Engine --- */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
+            border-left: 2px solid var(--primary);
+            display: none;
             margin-top: 8px;
+            animation: textFadeIn 0.2s ease-out;
+            line-height: 1.5;
         }
 
-        .option-item {
-            background: var(--panel-solid);
+        .qa-chevron {
+            font-size: 11px;
+            color: var(--muted);
+            transition: transform 0.2s;
+        }
+
+        .qa-card.active-panel .qa-chevron {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+
+        /* Fill in the Blanks */
+        .fill-card-box {
+            background: var(--panel-2);
             border: 1px solid var(--line);
-            padding: 10px 12px;
             border-radius: var(--radius-sm);
-            font-size: 12.5px;
+            padding: 14px;
+        }
+
+        .quiz-question {
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        .quiz-question span {
+            color: var(--primary);
+            margin-right: 4px;
+        }
+
+        .fill-row-alignment {
             display: flex;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .option-item:hover {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-
-        .option-item input[type="radio"] {
-            accent-color: var(--primary);
-        }
-
-        /* Input Configuration for Fills */
         .fill-input {
             background: var(--panel-solid);
-            border: 1px solid var(--line);
-            padding: 6px 10px;
+            border: 2px solid var(--line);
+            padding: 8px 12px;
             border-radius: 8px;
-            font-size: 12.5px;
+            font-size: 13px;
+            font-weight: 600;
             color: var(--text);
-            width: 100%;
-            max-width: 240px;
+            flex: 1;
             outline: none;
-            margin-top: 6px;
             transition: border-color 0.2s;
         }
 
@@ -329,7 +412,20 @@
             border-color: var(--primary);
         }
 
-        /* Writer Biography Structure */
+        .fill-reveal-btn {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: all 0.2s;
+        }
+
+        /* Writer Biography */
         .writer-profile-box {
             display: flex;
             flex-direction: column;
@@ -361,52 +457,31 @@
             line-height: 1.5;
         }
 
-        /* --- Desktop Viewport Up-Scaling Optimization --- */
         @media (min-width: 768px) {
-            :root {
-                --nav-h: 64px;
-                --radius: 20px;
-                --radius-sm: 14px;
-            }
-
             .container {
                 padding: 20px;
+                padding-left: calc(20px + env(safe-area-inset-left));
+                padding-right: calc(20px + env(safe-area-inset-right));
                 gap: 20px;
-                /* Side-by-side components grid framework for Desktop view symmetry */
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
             }
 
             .chapter-hero,
-            .writer-panel {
+            .writer-panel,
+            .summary-panel {
                 grid-column: span 2;
             }
 
-            .nav-left h1 {
-                font-size: 18px;
-            }
-
-            .chapter-hero h2 {
-                font-size: 26px;
-            }
-
-            .chapter-hero p {
-                font-size: 14px;
-            }
-
-            .options-grid {
+            .quiz-options-wrapper {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .fill-input {
-                width: auto;
             }
         }
 
         @keyframes textFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(2px);
+                transform: translateY(3px);
             }
 
             to {
@@ -418,12 +493,6 @@
         * {
             user-select: none;
             -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-
-        img {
-            pointer-events: none;
-            -webkit-user-drag: none;
         }
     </style>
 </head>
@@ -432,9 +501,7 @@
 
     <nav>
         <div class="nav-left">
-            <a href="../../home.html" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
+            <a href="../../home.html" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
             <h1>English Library</h1>
         </div>
     </nav>
@@ -442,13 +509,14 @@
     <div class="container">
 
         <div class="chapter-hero">
-            <span class="meta-badge">Class 9 • Chapter 3 • Prose</span>
+            <span class="meta-badge">Class 9 • Chapter 03 • Prose</span>
             <h2>The Little Girl</h2>
-            <p>The Little Girl is a poignant story that explores the relationship between a father and his daughter,
-                highlighting themes of love, understanding, and the innocence of childhood. 🎵</p>
+            <p>The Little Girl is a poignant story that explores the themes of childhood innocence, parental love, and
+                the harsh realities of life. Through the eyes of a young girl, the narrative delves into her dreams,
+                fears, and the lessons she learns as she navigates her world. 🎵</p>
         </div>
 
-        <div class="panel" style="grid-column: span 2;">
+        <div class="panel summary-panel">
             <div class="panel-header">
                 <div class="panel-title">
                     <i class="fa-solid fa-file-invoice"></i>
@@ -459,415 +527,27 @@
                     <button class="lang-btn" onclick="switchSummaryLanguage('hi', this)">हिंदी</button>
                 </div>
             </div>
-            <div class="summary-content-area" id="summaryViewPort">
-            </div>
+            <div class="summary-content-area" id="summaryViewPort"></div>
         </div>
 
         <div class="panel">
             <div class="panel-header">
                 <div class="panel-title">
-                    <i class="fa-solid fa-list-check"></i>
-                    <h3>Multiple Choice Questions</h3>
+                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
+                    <h3>MCQ Quiz Arena</h3>
                 </div>
             </div>
-            <div class="quiz-stack">
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>1.</span> Who is the little girl in the story?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq1"> Alice</label>
-                        <label class="option-item"><input type="radio" name="mcq1"> Kezia</label>
-                        <label class="option-item"><input type="radio" name="mcq1"> Margie</label>
-                        <label class="option-item"><input type="radio" name="mcq1"> Anne</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>2.</span> Why was Kezia afraid of her father?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq2"> He was very strict</label>
-                        <label class="option-item"><input type="radio" name="mcq2"> He never came home</label>
-                        <label class="option-item"><input type="radio" name="mcq2"> He scolded her friends</label>
-                        <label class="option-item"><input type="radio" name="mcq2"> He disliked children</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>3.</span> What did Kezia's grandmother encourage her to do?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq3"> Play outside</label>
-                        <label class="option-item"><input type="radio" name="mcq3"> Talk to her father</label>
-                        <label class="option-item"><input type="radio" name="mcq3"> Read more books</label>
-                        <label class="option-item"><input type="radio" name="mcq3"> Learn music</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>4.</span> What gift did Kezia decide to make for her father?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq4"> A painting</label>
-                        <label class="option-item"><input type="radio" name="mcq4"> A pin-cushion</label>
-                        <label class="option-item"><input type="radio" name="mcq4"> A toy</label>
-                        <label class="option-item"><input type="radio" name="mcq4"> A cake</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>5.</span> What did Kezia use to fill the pin-cushion?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq5"> Cotton</label>
-                        <label class="option-item"><input type="radio" name="mcq5"> Old newspapers</label>
-                        <label class="option-item"><input type="radio" name="mcq5"> Feathers</label>
-                        <label class="option-item"><input type="radio" name="mcq5"> Wool</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>6.</span> What important papers did Kezia tear up?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq6"> School papers</label>
-                        <label class="option-item"><input type="radio" name="mcq6"> Office speech papers</label>
-                        <label class="option-item"><input type="radio" name="mcq6"> Letters</label>
-                        <label class="option-item"><input type="radio" name="mcq6"> Bills</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>7.</span> Why did Kezia tear the papers?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq7"> She was angry</label>
-                        <label class="option-item"><input type="radio" name="mcq7"> She wanted paper scraps for the
-                            cushion</label>
-                        <label class="option-item"><input type="radio" name="mcq7"> She was playing a game</label>
-                        <label class="option-item"><input type="radio" name="mcq7"> She wanted to hide them</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>8.</span> How did Kezia's father punish her?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq8"> He grounded her</label>
-                        <label class="option-item"><input type="radio" name="mcq8"> He beat her with a ruler</label>
-                        <label class="option-item"><input type="radio" name="mcq8"> He shouted at her</label>
-                        <label class="option-item"><input type="radio" name="mcq8"> He made her stand outside</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>9.</span> What did Kezia think of her father after the punishment?
-                    </div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq9"> Kind</label>
-                        <label class="option-item"><input type="radio" name="mcq9"> Cruel</label>
-                        <label class="option-item"><input type="radio" name="mcq9"> Funny</label>
-                        <label class="option-item"><input type="radio" name="mcq9"> Intelligent</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>10.</span> Who lived next door to Kezia's family?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq10"> The Macdonald family</label>
-                        <label class="option-item"><input type="radio" name="mcq10"> The Smith family</label>
-                        <label class="option-item"><input type="radio" name="mcq10"> The Brown family</label>
-                        <label class="option-item"><input type="radio" name="mcq10"> The Wilson family</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>11.</span> How many children did the Macdonald family have?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq11"> Three</label>
-                        <label class="option-item"><input type="radio" name="mcq11"> Four</label>
-                        <label class="option-item"><input type="radio" name="mcq11"> Five</label>
-                        <label class="option-item"><input type="radio" name="mcq11"> Six</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>12.</span> Why did Kezia admire Mr. Macdonald?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq12"> He was rich</label>
-                        <label class="option-item"><input type="radio" name="mcq12"> He played happily with his
-                            children</label>
-                        <label class="option-item"><input type="radio" name="mcq12"> He was a teacher</label>
-                        <label class="option-item"><input type="radio" name="mcq12"> He travelled often</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>13.</span> What happened when Kezia's mother became ill?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq13"> Kezia stayed with her aunt</label>
-                        <label class="option-item"><input type="radio" name="mcq13"> Kezia slept alone</label>
-                        <label class="option-item"><input type="radio" name="mcq13"> Kezia went to boarding
-                            school</label>
-                        <label class="option-item"><input type="radio" name="mcq13"> Kezia visited her
-                            grandmother</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>14.</span> Why did Kezia wake up crying at night?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq14"> She was hungry</label>
-                        <label class="option-item"><input type="radio" name="mcq14"> She had a nightmare</label>
-                        <label class="option-item"><input type="radio" name="mcq14"> She heard a noise</label>
-                        <label class="option-item"><input type="radio" name="mcq14"> She was sick</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>15.</span> Who comforted Kezia after her nightmare?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq15"> Her mother</label>
-                        <label class="option-item"><input type="radio" name="mcq15"> Her grandmother</label>
-                        <label class="option-item"><input type="radio" name="mcq15"> Her father</label>
-                        <label class="option-item"><input type="radio" name="mcq15"> Her sister</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>16.</span> What did Kezia realize about her father that night?
-                    </div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq16"> He was lazy</label>
-                        <label class="option-item"><input type="radio" name="mcq16"> He loved her and worked hard for
-                            the family</label>
-                        <label class="option-item"><input type="radio" name="mcq16"> He wanted her to leave home</label>
-                        <label class="option-item"><input type="radio" name="mcq16"> He disliked children</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>17.</span> What was Kezia's father's profession?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq17"> Doctor</label>
-                        <label class="option-item"><input type="radio" name="mcq17"> Teacher</label>
-                        <label class="option-item"><input type="radio" name="mcq17"> Office worker</label>
-                        <label class="option-item"><input type="radio" name="mcq17"> Farmer</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>18.</span> What did Kezia compare her father to earlier in the
-                        story?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq18"> A giant</label>
-                        <label class="option-item"><input type="radio" name="mcq18"> A king</label>
-                        <label class="option-item"><input type="radio" name="mcq18"> A soldier</label>
-                        <label class="option-item"><input type="radio" name="mcq18"> A teacher</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>19.</span> What is the main theme of "The Little Girl"?</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq19"> Adventure</label>
-                        <label class="option-item"><input type="radio" name="mcq19"> Understanding parental love</label>
-                        <label class="option-item"><input type="radio" name="mcq19"> Friendship</label>
-                        <label class="option-item"><input type="radio" name="mcq19"> Travel</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>20.</span> At the end of the story, Kezia's feelings toward her
-                        father became</div>
-                    <div class="options-grid">
-                        <label class="option-item"><input type="radio" name="mcq20"> More fearful</label>
-                        <label class="option-item"><input type="radio" name="mcq20"> Respectful and loving</label>
-                        <label class="option-item"><input type="radio" name="mcq20"> Angry</label>
-                        <label class="option-item"><input type="radio" name="mcq20"> Unchanged</label>
-                    </div>
-                </div>
-
-            </div>
+            <div class="quiz-arena-box" id="mcqArenaRoot"></div>
         </div>
 
         <div class="panel">
             <div class="panel-header">
                 <div class="panel-title">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <h3>True / False Section</h3>
+                    <i class="fa-solid fa-circle-question" style="color: var(--accent-orange);"></i>
+                    <h3>True / False Arena</h3>
                 </div>
             </div>
-            <div class="quiz-stack">
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>1.</span> Kezia was afraid of her father because he was very strict
-                        and serious.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf1"> True</label>
-                        <label class="option-item"><input type="radio" name="tf1"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>2.</span> Kezia's grandmother encouraged her to talk freely with
-                        her father.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf2"> True</label>
-                        <label class="option-item"><input type="radio" name="tf2"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>3.</span> Kezia made a birthday card for her father.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf3"> True</label>
-                        <label class="option-item"><input type="radio" name="tf3"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>4.</span> Kezia decided to make a pin-cushion as a gift for her
-                        father.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf4"> True</label>
-                        <label class="option-item"><input type="radio" name="tf4"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>5.</span> Kezia filled the pin-cushion with paper scraps.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf5"> True</label>
-                        <label class="option-item"><input type="radio" name="tf5"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>6.</span> The papers Kezia tore up were unimportant old newspapers.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf6"> True</label>
-                        <label class="option-item"><input type="radio" name="tf6"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>7.</span> Kezia's father had prepared the papers for an important
-                        speech.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf7"> True</label>
-                        <label class="option-item"><input type="radio" name="tf7"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>8.</span> Kezia's father praised her for making the pin-cushion.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf8"> True</label>
-                        <label class="option-item"><input type="radio" name="tf8"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>9.</span> After being punished, Kezia thought her father was cruel.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf9"> True</label>
-                        <label class="option-item"><input type="radio" name="tf9"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>10.</span> Kezia admired Mr. Macdonald because he spent time
-                        playing with his children.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf10"> True</label>
-                        <label class="option-item"><input type="radio" name="tf10"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>11.</span> The Macdonald family had five children.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf11"> True</label>
-                        <label class="option-item"><input type="radio" name="tf11"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>12.</span> Kezia wished her father were more like Mr. Macdonald.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf12"> True</label>
-                        <label class="option-item"><input type="radio" name="tf12"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>13.</span> Kezia's mother became ill and had to stay in the
-                        hospital.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf13"> True</label>
-                        <label class="option-item"><input type="radio" name="tf13"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>14.</span> Kezia was frightened by a nightmare when she slept
-                        alone.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf14"> True</label>
-                        <label class="option-item"><input type="radio" name="tf14"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>15.</span> Kezia's father ignored her when she cried at night.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf15"> True</label>
-                        <label class="option-item"><input type="radio" name="tf15"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>16.</span> Kezia's father carried her to his bed and comforted her.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf16"> True</label>
-                        <label class="option-item"><input type="radio" name="tf16"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>17.</span> Kezia realized that her father worked hard for the
-                        family.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf17"> True</label>
-                        <label class="option-item"><input type="radio" name="tf17"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>18.</span> Earlier, Kezia compared her father to a giant.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf18"> True</label>
-                        <label class="option-item"><input type="radio" name="tf18"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>19.</span> By the end of the story, Kezia still hated her father.
-                    </div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf19"> True</label>
-                        <label class="option-item"><input type="radio" name="tf19"> False</label>
-                    </div>
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>20.</span> The story teaches us that parents may show love in
-                        different ways.</div>
-                    <div class="options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                        <label class="option-item"><input type="radio" name="tf20"> True</label>
-                        <label class="option-item"><input type="radio" name="tf20"> False</label>
-                    </div>
-                </div>
-
-            </div>
+            <div class="quiz-arena-box" id="tfArenaRoot"></div>
         </div>
 
         <div class="panel">
@@ -877,120 +557,7 @@
                     <h3>Fill in the Blanks</h3>
                 </div>
             </div>
-            <div class="quiz-stack">
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>1.</span> The name of the little girl in the story is ________.
-                    </div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>2.</span> Kezia was afraid of her ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>3.</span> Kezia's grandmother encouraged her to ________ to her
-                        father.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>4.</span> Kezia decided to make a ________ for her father.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>5.</span> Kezia filled the pin-cushion with torn ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>6.</span> The torn papers were actually her father's ________.
-                    </div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>7.</span> Kezia's father punished her with a ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>8.</span> After the punishment, Kezia thought her father was very
-                        ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>9.</span> The ________ family lived next door to Kezia.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>10.</span> Mr. Macdonald had ________ children.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>11.</span> Kezia admired Mr. Macdonald because he played with his
-                        ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>12.</span> One night Kezia woke up because of a terrible ________.
-                    </div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>13.</span> Kezia's mother was ________ and could not look after
-                        her.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>14.</span> Kezia's father carried her to his own ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>15.</span> Kezia's father worked very ________ for the family.
-                    </div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>16.</span> Earlier, Kezia compared her father to a ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>17.</span> By the end of the story, Kezia understood her father's
-                        ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>18.</span> Kezia's father had prepared the papers for an important
-                        ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>19.</span> The chapter "The Little Girl" is written by ________
-                        Mansfield.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-                <div class="quiz-card">
-                    <div class="quiz-question"><span>20.</span> The story teaches us to understand and respect our
-                        ________.</div>
-                    <input type="text" class="fill-input" placeholder="Type your answer...">
-                </div>
-
-            </div>
+            <div class="qa-stack" id="fibArenaRoot"></div>
         </div>
 
         <div class="panel">
@@ -1000,376 +567,7 @@
                     <h3>Conceptual Q&A Matrix</h3>
                 </div>
             </div>
-            <div class="qa-stack">
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q1.</span> Who was Kezia?</div>
-                    <div class="qa-answer">Kezia was a little girl who was afraid of her strict and serious father. She
-                        misunderstood his behavior and thought he did not love her, but later she realized that he cared
-                        deeply for her.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q2.</span> Why was Kezia afraid of her father?</div>
-                    <div class="qa-answer">Kezia was afraid of her father because he was strict, spoke harshly, and
-                        rarely showed affection. His serious nature made her nervous whenever she was around him.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q3.</span> What did Kezia's grandmother want her to do?</div>
-                    <div class="qa-answer">Kezia's grandmother wanted her to know her father better. She encouraged her
-                        to talk to him and try to overcome her fear.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q4.</span> What gift did Kezia make for her father?</div>
-                    <div class="qa-answer">Kezia made a pin-cushion for her father as a birthday gift. She filled it
-                        with torn pieces of paper, not realizing that they were important documents.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q5.</span> Why was Kezia punished?</div>
-                    <div class="qa-answer">Kezia was punished because she tore up her father's important speech papers
-                        and used them to fill the pin-cushion she had made for him.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q6.</span> Who were the Macdonalds?</div>
-                    <div class="qa-answer">The Macdonalds were Kezia's neighbors. Mr. Macdonald was cheerful and playful
-                        with his children, which impressed Kezia greatly.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q7.</span> Why did Kezia admire Mr. Macdonald?</div>
-                    <div class="qa-answer">Kezia admired Mr. Macdonald because he spent time playing with his children
-                        and treated them lovingly. He seemed very different from her own father.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q8.</span> What frightened Kezia one night?</div>
-                    <div class="qa-answer">One night, when her mother was ill, Kezia had a terrible nightmare. She woke
-                        up frightened and cried loudly for help.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q9.</span> How did Kezia's father comfort her?</div>
-                    <div class="qa-answer">Kezia's father took her into his room, carried her to his bed, and comforted
-                        her until she felt safe and calm again.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q10.</span> What lesson did Kezia learn at the end of the story?
-                    </div>
-                    <div class="qa-answer">Kezia learned that her father loved her deeply. She realized that his strict
-                        behavior did not mean he lacked affection for his family.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q11.</span> Describe Kezia's relationship with her father in the
-                        beginning of the story.</div>
-                    <div class="qa-answer">In the beginning of the story, Kezia shared a distant and fearful
-                        relationship with her father. She was frightened by his strict discipline, loud voice, and
-                        serious behavior. She rarely spoke to him comfortably and believed that he did not care for her.
-                        Because of his stern personality, she felt nervous whenever he was around and found it difficult
-                        to understand his true feelings.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q12.</span> Explain the incident of the pin-cushion.</div>
-                    <div class="qa-answer">Kezia wanted to surprise her father by making a pin-cushion as a gift. To
-                        fill it, she tore up papers she found in his room. Unfortunately, those papers contained an
-                        important speech her father had prepared for work. When he discovered what had happened, he
-                        became very angry and punished her. This incident increased Kezia's fear and misunderstanding of
-                        her father.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q13.</span> How was Mr. Macdonald different from Kezia's father?
-                    </div>
-                    <div class="qa-answer">Mr. Macdonald was cheerful, playful, and openly affectionate toward his
-                        children. He spent time playing games with them and made them laugh. In contrast, Kezia's father
-                        appeared strict, busy, and reserved. While Mr. Macdonald expressed his love openly, Kezia's
-                        father showed his care through hard work and responsibility. This difference made Kezia admire
-                        Mr. Macdonald greatly.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q14.</span> What changed Kezia's opinion about her father?</div>
-                    <div class="qa-answer">Kezia's opinion changed after the night she had a frightening nightmare. Her
-                        father immediately came to comfort her, carried her to his bed, and stayed beside her until she
-                        felt safe. During that moment, she realized that he truly loved and cared for her. She also
-                        understood how hard he worked for the family. This experience removed much of her fear and
-                        misunderstanding.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q15.</span> Why is the chapter titled "The Little Girl"?</div>
-                    <div class="qa-answer">The chapter is titled "The Little Girl" because it focuses on Kezia, a young
-                        girl whose thoughts and emotions drive the story. The narrative presents the world from her
-                        perspective and highlights her fears, misunderstandings, and eventual realization about her
-                        father's love. Through Kezia's experiences, readers learn about family relationships and the
-                        importance of understanding others beyond appearances.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q16.</span> Describe Kezia's father as a character.</div>
-                    <div class="qa-answer">Kezia's father was a hardworking, responsible, and disciplined man. Although
-                        he seemed strict and unapproachable, he deeply loved his family. He spent long hours working to
-                        provide for them and had little time to express affection openly. His caring nature became
-                        evident when he comforted Kezia during her nightmare. Thus, beneath his stern exterior was a
-                        loving and devoted father.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q17.</span> What role did Kezia's grandmother play in the story?
-                    </div>
-                    <div class="qa-answer">Kezia's grandmother played the role of a caring guide and mediator. She
-                        understood both Kezia and her father and tried to bridge the gap between them. She encouraged
-                        Kezia to talk to her father and helped her understand him better. Her advice and support showed
-                        her wisdom and concern for maintaining harmony within the family.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q18.</span> What does the story teach us about parents?</div>
-                    <div class="qa-answer">The story teaches that parents may express their love in different ways. Some
-                        are openly affectionate, while others show care through responsibility, sacrifice, and hard
-                        work. Children may sometimes misunderstand strict behavior as lack of love. The chapter reminds
-                        readers to appreciate their parents' efforts and understand their feelings before forming
-                        judgments about them.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q19.</span> How did Kezia's fear affect her behavior?</div>
-                    <div class="qa-answer">Kezia's fear made her nervous and uncomfortable around her father. She
-                        avoided talking to him freely and often felt anxious in his presence. Because of this fear, she
-                        failed to recognize his love and concern. Her misunderstanding prevented a close relationship
-                        between them. Only after a significant experience did she begin to see her father differently
-                        and overcome her fear.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q20.</span> Summarize the central idea of "The Little Girl".</div>
-                    <div class="qa-answer">The central idea of "The Little Girl" is that appearances can be misleading.
-                        Kezia initially believes her father is harsh and uncaring because of his strict behavior.
-                        However, she later discovers that he loves her deeply and works hard for the family's
-                        well-being. The story highlights parental love, understanding, and the importance of looking
-                        beyond outward actions to recognize genuine care.</div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q21.</span> Character Sketch of Kezia.</div>
-                    <div class="qa-answer">
-                        <b>Introduction:</b><br>
-                        Kezia is the protagonist of the story "The Little Girl" written by Katherine Mansfield. She is a
-                        young, innocent, sensitive, and imaginative child whose experiences form the basis of the story.
-                        Through her character, the author presents the emotions, fears, and misunderstandings that many
-                        children experience while growing up.
-                        <br><br>
-
-                        <b>Fearful and Timid Nature:</b><br>
-                        Kezia is extremely afraid of her father. His stern appearance, loud voice, and strict behavior
-                        make her nervous. Whenever she has to speak to him, she becomes uncomfortable and often
-                        stammers. She sees him as a giant and believes that he does not love her.
-                        <br><br>
-
-                        <b>Innocent and Pure-Hearted:</b><br>
-                        Despite being afraid of her father, Kezia has a loving heart. She wishes to make him happy and
-                        decides to prepare a pin-cushion as a birthday gift. Her mistake of tearing up the speech papers
-                        is not intentional but a result of her innocence and lack of understanding.
-                        <br><br>
-
-                        <b>Emotional and Sensitive:</b><br>
-                        Kezia is deeply emotional. She is easily hurt by harsh words and punishment. She longs for
-                        affection and wishes that her father would behave more lovingly toward her. Her emotional nature
-                        is reflected in the way she compares her family with the Macdonald family.
-                        <br><br>
-
-                        <b>Observant and Thoughtful:</b><br>
-                        Kezia carefully observes the behavior of people around her. She notices the warmth and happiness
-                        in the Macdonald family and wishes her relationship with her father could be similar. Her
-                        observations help readers understand her emotional struggles.
-                        <br><br>
-
-                        <b>Growth and Transformation:</b><br>
-                        The most important aspect of Kezia's character is her growth. After her father comforts her
-                        during a nightmare, she realizes that he loves her deeply. She understands that his strictness
-                        is not a sign of hatred but a reflection of his hardworking and responsible nature.
-                        <br><br>
-
-                        <b>Conclusion:</b><br>
-                        Kezia is a lovable, innocent, and sensitive child whose journey from fear to understanding forms
-                        the heart of the story. Her character teaches readers the importance of understanding others
-                        before judging them.
-                    </div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q22.</span> Character Sketch of Kezia's Father.</div>
-                    <div class="qa-answer">
-                        <b>Introduction:</b><br>
-                        Kezia's father is one of the most significant characters in the story. Though he initially
-                        appears harsh and unapproachable, he is actually a loving, hardworking, and responsible parent
-                        whose true nature is revealed gradually.
-                        <br><br>
-
-                        <b>Strict and Disciplined:</b><br>
-                        He believes strongly in discipline and order. His serious attitude and commanding voice create
-                        an image of authority. As a result, Kezia becomes frightened of him and avoids interacting with
-                        him whenever possible.
-                        <br><br>
-
-                        <b>Hardworking and Dedicated:</b><br>
-                        Kezia's father works long hours every day to support his family. He sacrifices his comfort and
-                        leisure to ensure that his family has everything they need. His dedication highlights his sense
-                        of responsibility.
-                        <br><br>
-
-                        <b>Loving Yet Reserved:</b><br>
-                        Unlike Mr. Macdonald, he does not openly express his emotions. However, his love for Kezia is
-                        genuine. He cares deeply for her but struggles to show affection through words and actions.
-                        <br><br>
-
-                        <b>Misunderstood Personality:</b><br>
-                        Because of his strict behavior, Kezia misunderstands him. She assumes that he is cruel and
-                        uncaring. However, readers eventually realize that his actions stem from concern,
-                        responsibility, and a desire to guide his daughter.
-                        <br><br>
-
-                        <b>Caring and Protective:</b><br>
-                        His true character becomes evident when Kezia wakes up frightened after a nightmare. He
-                        immediately comforts her, carries her to his bed, and stays beside her. This moment reveals his
-                        deep parental love.
-                        <br><br>
-
-                        <b>Conclusion:</b><br>
-                        Kezia's father is a disciplined, responsible, hardworking, and caring man. His character teaches
-                        us that love is not always expressed through words; sometimes it is shown through sacrifice,
-                        duty, and protection.
-                    </div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q23.</span> Character Sketch of Grandmother.</div>
-                    <div class="qa-answer">
-                        <b>Introduction:</b><br>
-                        Grandmother is a minor yet highly influential character in the story. She acts as a source of
-                        comfort, wisdom, and understanding for Kezia and plays an important role in improving family
-                        relationships.
-                        <br><br>
-
-                        <b>Loving and Affectionate:</b><br>
-                        She loves Kezia dearly and always treats her with kindness. Whenever Kezia feels lonely or
-                        upset, Grandmother is there to comfort and encourage her.
-                        <br><br>
-
-                        <b>Wise and Mature:</b><br>
-                        Grandmother understands human nature very well. She knows that Kezia's father loves his daughter
-                        deeply even though he rarely expresses his feelings openly.
-                        <br><br>
-
-                        <b>Supportive and Encouraging:</b><br>
-                        She constantly encourages Kezia to talk to her father and overcome her fear. She wants them to
-                        develop a healthy and loving relationship.
-                        <br><br>
-
-                        <b>Bridge Between Father and Daughter:</b><br>
-                        One of her most important roles is acting as a bridge between Kezia and her father. She tries to
-                        reduce misunderstandings and helps both of them understand each other better.
-                        <br><br>
-
-                        <b>Symbol of Warmth and Care:</b><br>
-                        Her presence creates a feeling of warmth and security in the story. She represents the nurturing
-                        qualities often associated with grandparents.
-                        <br><br>
-
-                        <b>Conclusion:</b><br>
-                        Grandmother is a caring, wise, and compassionate woman. Through her guidance and support, she
-                        helps Kezia move closer to understanding her father and appreciating his love.
-                    </div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q24.</span> Character Sketch of Mr. Macdonald.</div>
-                    <div class="qa-answer">
-                        <b>Introduction:</b><br>
-                        Mr. Macdonald is Kezia's neighbor and serves as a contrast to Kezia's father. Through his
-                        character, the author presents a different style of parenting and family interaction.
-                        <br><br>
-
-                        <b>Cheerful and Friendly:</b><br>
-                        Mr. Macdonald is always cheerful and energetic. He enjoys spending time with his children and
-                        creates a joyful atmosphere around him.
-                        <br><br>
-
-                        <b>Affectionate Father:</b><br>
-                        He openly expresses his love and affection. He plays games with his children, laughs with them,
-                        and makes them feel loved and valued.
-                        <br><br>
-
-                        <b>Close Relationship with Children:</b><br>
-                        Unlike Kezia's father, Mr. Macdonald shares a friendly relationship with his children. They are
-                        comfortable around him and enjoy his company.
-                        <br><br>
-
-                        <b>Idealized Figure in Kezia's Eyes:</b><br>
-                        Kezia admires him because he represents everything she wishes her own father could be. His
-                        behavior makes her question why her father seems so different.
-                        <br><br>
-
-                        <b>Importance in the Story:</b><br>
-                        Mr. Macdonald's character helps highlight the misunderstanding between Kezia and her father. By
-                        comparing the two fathers, readers gain a deeper understanding of the story's message.
-                        <br><br>
-
-                        <b>Conclusion:</b><br>
-                        Mr. Macdonald is a loving, cheerful, and affectionate parent. His character serves as an
-                        important contrast that helps Kezia eventually recognize the unique way in which her own father
-                        expresses love.
-                    </div>
-                </div>
-
-                <div class="qa-card">
-                    <div class="qa-question"><span>Q25.</span> Theme, Message and Central Idea of "The Little Girl".
-                    </div>
-                    <div class="qa-answer">
-                        <b>Introduction:</b><br>
-                        "The Little Girl" is a heart-touching story that explores family relationships, childhood fears,
-                        parental love, and emotional understanding. It presents the world through the eyes of a young
-                        girl named Kezia.
-                        <br><br>
-
-                        <b>Misunderstanding and Perception:</b><br>
-                        One of the major themes of the story is misunderstanding. Kezia judges her father based on his
-                        strict behavior and fails to recognize the love hidden behind it.
-                        <br><br>
-
-                        <b>Parental Love and Sacrifice:</b><br>
-                        The story highlights the sacrifices parents make for their children. Kezia's father works
-                        tirelessly to provide for his family, even though his efforts often go unnoticed.
-                        <br><br>
-
-                        <b>Importance of Emotional Understanding:</b><br>
-                        The chapter teaches that people should not be judged solely by their outward behavior.
-                        Understanding someone's circumstances and intentions helps reveal their true character.
-                        <br><br>
-
-                        <b>Growth and Maturity:</b><br>
-                        Kezia undergoes emotional growth throughout the story. She moves from fear and misunderstanding
-                        to love, respect, and appreciation for her father.
-                        <br><br>
-
-                        <b>Moral of the Story:</b><br>
-                        The story teaches that love can be expressed in different ways. Some people show affection
-                        openly, while others express it through responsibility, protection, and sacrifice.
-                        <br><br>
-
-                        <b>Conclusion:</b><br>
-                        The central idea of the story is that true love often lies beneath actions that may appear harsh
-                        or distant. The chapter encourages readers to appreciate their parents, understand their
-                        sacrifices, and avoid judging others without knowing their true feelings and intentions.
-                    </div>
-                </div>
-
-            </div>
+            <div class="qa-stack" id="qaMatrixRoot"></div>
         </div>
 
         <div class="panel writer-panel">
@@ -1379,218 +577,478 @@
                     <h3>About the Writer</h3>
                 </div>
             </div>
-            <div class="writer-profile-box">
+            <div class="writer-profile-box" id="writerProfileRoot"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // CORE CENTRAL DATA STORAGE (Dynamic Repositories)
+        // ==========================================
+
+        // MCQ Quiz Master Data
+        const mcqQuizEngineData = [
+            { question: "Who is the central character of 'The Little Girl'?", options: ["Alice", "Kezia", "Margie", "Evelyn"], correctIndex: 1 },
+            { question: "Who was Kezia's father?", options: ["A teacher", "A businessman", "A doctor", "A farmer"], correctIndex: 1 },
+            { question: "How did Kezia feel about her father in the beginning?", options: ["She loved him deeply", "She was afraid of him", "She ignored him", "She admired him"], correctIndex: 1 },
+            { question: "Who suggested that Kezia make a pincushion for her father?", options: ["Her mother", "Her grandmother", "Her teacher", "Her aunt"], correctIndex: 1 },
+            { question: "What did Kezia use to fill the pincushion?", options: ["Cotton", "Old newspaper", "Paper scraps", "Wool"], correctIndex: 2 },
+            { question: "What important papers did Kezia tear up?", options: ["School notes", "Office documents", "Father's speech papers", "Letters"], correctIndex: 2 },
+            { question: "How did Kezia's father punish her?", options: ["Sent her outside", "Scolded her", "Beat her with a ruler", "Stopped talking to her"], correctIndex: 2 },
+            { question: "What did Kezia call her father in her imagination?", options: ["A king", "A giant", "A monster", "A soldier"], correctIndex: 2 },
+            { question: "Who comforted Kezia after her punishment?", options: ["Her mother", "Her grandmother", "Her teacher", "Her friend"], correctIndex: 1 },
+            { question: "What did Kezia's father do every Sunday?", options: ["Went to work", "Played cricket", "Relaxed and rested", "Visited relatives"], correctIndex: 2 },
+            { question: "What game did Kezia see the Macdonald children playing?", options: ["Football", "Hide and seek", "Tag", "Cricket"], correctIndex: 1 },
+            { question: "Why did Kezia envy the Macdonald children?", options: ["They were rich", "They had many toys", "Their father played with them", "They had a big house"], correctIndex: 2 },
+            { question: "What happened one night when Kezia's mother was ill?", options: ["Kezia got lost", "Kezia had a nightmare", "Kezia broke a toy", "Kezia cried all day"], correctIndex: 1 },
+            { question: "Who took care of Kezia that night?", options: ["Her grandmother", "Her father", "The cook", "Her aunt"], correctIndex: 1 },
+            { question: "Where did Kezia sleep that night?", options: ["In her room", "With her grandmother", "In her father's bed", "On the sofa"], correctIndex: 2 },
+            { question: "What did Kezia realize about her father?", options: ["He was cruel", "He was careless", "He loved her in his own way", "He disliked children"], correctIndex: 2 },
+            { question: "Why was Kezia's father often angry and tired?", options: ["He was sick", "He worked hard all day", "He disliked his family", "He had no friends"], correctIndex: 1 },
+            { question: "Who wrote 'The Little Girl'?", options: ["Katherine Mansfield", "Ruskin Bond", "R.K. Laxman", "Isaac Asimov"], correctIndex: 0 },
+            { question: "What is the main theme of the story?", options: ["Adventure", "Misunderstanding between parent and child", "Science", "Friendship"], correctIndex: 1 },
+            { question: "How did Kezia's feelings toward her father change at the end?", options: ["She feared him more", "She ignored him", "She understood and loved him", "She disliked him"], correctIndex: 2 }
+
+
+        ];
+
+        // True / False Master Data
+        const tfQuizEngineData = [
+            { question: "Iswaran worked as a cook and servant for Mahendra.", options: ["True", "False"], correctIndex: 0 }, { question: "Kezia's grandmother encouraged her to make a gift for her father.", options: ["True", "False"], correctIndex: 0 },
+            { question: "The gift Kezia made for her father was a pincushion.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Kezia stuffed the pincushion with cotton bought from a shop.", options: ["True", "False"], correctIndex: 1 },
+            { question: "The papers Kezia tore up contained an important speech written by her father.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Kezia's father discovered the missing papers on the same evening.", options: ["True", "False"], correctIndex: 0 },
+            { question: "After the incident, Kezia's father rewarded her for her honesty.", options: ["True", "False"], correctIndex: 1 },
+            { question: "Kezia believed that her father was harder than a giant in a fairy tale.", options: ["True", "False"], correctIndex: 1 },
+            { question: "The Macdonald family lived next door to Kezia's family.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Mr. Macdonald often spent time playing happily with his children.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Kezia wished her father behaved more like Mr. Macdonald.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Kezia's mother stayed with her during the night of the nightmare.", options: ["True", "False"], correctIndex: 1 },
+            { question: "Kezia's father carried her to his room when she was frightened.", options: ["True", "False"], correctIndex: 0 },
+            { question: "While comforting Kezia, her father explained how tired he was after work.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Kezia realized that her father worked hard for the family.", options: ["True", "False"], correctIndex: 0 },
+            { question: "At the end of the story, Kezia still considered her father a monster.", options: ["True", "False"], correctIndex: 1 },
+            { question: "Kezia's father had rough hands because of his hard work.", options: ["True", "False"], correctIndex: 0 },
+            { question: "The story shows that children can sometimes misunderstand their parents.", options: ["True", "False"], correctIndex: 0 },
+            { question: "Kezia was completely comfortable talking to her father at the beginning of the story.", options: ["True", "False"], correctIndex: 1 },
+            { question: "The nightmare helped Kezia understand a different side of her father.", options: ["True", "False"], correctIndex: 0 },
+            { question: "The chapter ends with Kezia feeling closer to her father than before.", options: ["True", "False"], correctIndex: 0 }
+
+
+        ];
+
+        // Fill in the Blanks Master Data Array
+        const fillInBlanksDataAsset = [
+            { id: 1, question: "Kezia always stuttered before speaking to her ________.", answer: "father" },
+            { id: 2, question: "Every morning, Kezia's father went to his ________.", answer: "office" },
+            { id: 3, question: "Kezia's father usually carried a ________ when he came home.", answer: "newspaper" },
+            { id: 4, question: "When Kezia's father entered the house, she often hid behind her ________.", answer: "grandmother" },
+            { id: 5, question: "The sheets of paper Kezia used were taken from her father's ________.", answer: "bedroom" },
+            { id: 6, question: "Kezia's father spoke in a loud and ________ voice.", answer: "commanding" },
+            { id: 7, question: "The Macdonald family had ________ children.", answer: "five" },
+            { id: 8, question: "Mr. Macdonald was often seen playing ________ with his children.", answer: "games" },
+            { id: 9, question: "Kezia thought her father was too busy and ________.", answer: "serious" },
+            { id: 10, question: "One night, Kezia woke up because of a terrible ________.", answer: "nightmare" },
+            { id: 11, question: "Kezia's grandmother was away at the ________ when the nightmare occurred.", answer: "hospital" },
+            { id: 12, question: "Kezia's father wrapped her warmly in the ________.", answer: "bedclothes" },
+            { id: 13, question: "While lying beside her father, Kezia listened to his ________ heartbeat.", answer: "big" },
+            { id: 14, question: "Kezia noticed that her father's heart was full of ________ for her.", answer: "love" },
+            { id: 15, question: "The story 'The Little Girl' was written by Katherine ________.", answer: "Mansfield" },
+            { id: 16, question: "Kezia's father worked hard to provide comfort for his ________.", answer: "family" },
+            { id: 17, question: "The story teaches the importance of understanding and ________.", answer: "love" },
+            { id: 18, question: "Kezia slowly lost her fear and gained ________ in her father.", answer: "trust" },
+            { id: 19, question: "The chapter highlights the bond between a child and her ________.", answer: "parent" },
+            { id: 20, question: "By the end of the story, Kezia's opinion of her father completely ________.", answer: "changed" }
+
+
+        ];
+
+        // Conceptual Questions & Answers Data Array
+        const conceptualQADataAsset = [
+            {
+                id: 1,
+                question: "Why was Kezia afraid of her father at the beginning of the story?",
+                answer: "Kezia was afraid of her father because he was strict, serious, and spoke in a commanding manner. She found it difficult to talk to him and often stammered in his presence. His busy schedule and lack of affectionate behavior made her see him as a frightening person rather than a loving parent."
+            },
+            {
+                id: 2,
+                question: "How did Kezia's grandmother try to improve her relationship with her father?",
+                answer: "Kezia's grandmother encouraged her to communicate more with her father and understand him better. She suggested that Kezia make a pincushion as a birthday gift for him. Through such efforts, she hoped Kezia would overcome her fear and develop a closer bond with her father."
+            },
+            {
+                id: 3,
+                question: "What mistake did Kezia make while preparing the pincushion?",
+                answer: "While preparing the pincushion, Kezia needed something to fill it. She tore up several sheets of paper she found in her father's room, not realizing they contained an important speech. Her innocent mistake caused great trouble and led to her father becoming extremely angry with her."
+            },
+            {
+                id: 4,
+                question: "Why did Kezia compare her father to a giant?",
+                answer: "Kezia compared her father to a giant because of his large appearance, stern expressions, and strict behavior. To her young mind, he seemed powerful and intimidating. Since he rarely expressed affection openly, she imagined him as someone frightening rather than loving and caring."
+            },
+            {
+                id: 5,
+                question: "What did Kezia think about the Macdonald family?",
+                answer: "Kezia admired the Macdonald family because their father was cheerful and playful with his children. She often saw them enjoying games together and laughing happily. This made her wish that her own father would spend more time with her and show affection in a similar manner."
+            },
+            {
+                id: 6,
+                question: "How did Kezia react after being punished by her father?",
+                answer: "After being punished, Kezia felt deeply hurt and frightened. She cried bitterly and believed that her father did not love her. The incident strengthened her fear of him and made her feel even more distant. She found comfort only in the support and sympathy of her grandmother."
+            },
+            {
+                id: 7,
+                question: "What happened on the night when Kezia had a nightmare?",
+                answer: "One night, Kezia had a frightening nightmare and woke up terrified. Since her mother was unwell and her grandmother was away, her father came to help her. He carried her to his room, comforted her, and allowed her to sleep beside him, making her feel safe and protected."
+            },
+            {
+                id: 8,
+                question: "How did Kezia's opinion of her father begin to change?",
+                answer: "Kezia's opinion changed when her father comforted her after the nightmare. She realized that despite his strict nature, he genuinely cared for her. Spending time beside him helped her understand his kindness and the sacrifices he made for the family through his hard work."
+            },
+            {
+                id: 9,
+                question: "What did Kezia learn about her father's life?",
+                answer: "Kezia learned that her father worked extremely hard every day to support the family. His tiredness and seriousness were not signs of unkindness but the result of his responsibilities. Understanding this helped her appreciate his efforts and see him from a more mature perspective."
+            },
+            {
+                id: 10,
+                question: "What is the main message of 'The Little Girl'?",
+                answer: "The story teaches that children may sometimes misunderstand their parents because they do not fully understand their responsibilities and feelings. It highlights the importance of communication, empathy, and love. The chapter shows that true affection may be expressed through actions rather than words."
+            },
+
+            {
+                id: 11,
+                question: "Describe the relationship between Kezia and her father at the beginning and at the end of the story.",
+                answer: "At the beginning of the story, Kezia's relationship with her father is based mainly on fear and misunderstanding. She sees him as a strict, unapproachable person who rarely smiles or shows affection. His commanding voice and busy lifestyle make her nervous whenever he is around. As a result, she feels distant from him and compares him unfavorably with other fathers. However, by the end of the story, her feelings change completely. After her nightmare, her father comforts her and lets her sleep beside him. She realizes that beneath his stern exterior lies a caring and hardworking parent. This experience helps Kezia understand his love and transforms fear into affection and respect."
+            },
+            {
+                id: 12,
+                question: "How does Katherine Mansfield present the theme of parental love in the story?",
+                answer: "Katherine Mansfield presents parental love as something that may not always be expressed openly through words. Kezia's father appears strict and distant because of his demanding work schedule and serious personality. However, his actions reveal his genuine concern for his daughter. When Kezia is frightened by a nightmare, he immediately comforts her and makes her feel secure. Through this incident, the author shows that parents often express their love through care, protection, and sacrifice rather than constant displays of affection. The story encourages readers to look beyond appearances and appreciate the silent love that parents have for their children."
+            },
+            {
+                id: 13,
+                question: "Why is Kezia's grandmother an important character in the story?",
+                answer: "Kezia's grandmother plays an important role as a caring and understanding figure in her life. She provides emotional support whenever Kezia feels lonely, frightened, or upset. The grandmother constantly encourages Kezia to understand her father better and helps bridge the gap between them. She suggests making a birthday gift for him and often comforts Kezia after difficult experiences. Her kindness and wisdom help Kezia gradually develop a more balanced view of her father. Without the grandmother's guidance, Kezia might have continued to misunderstand her father's true nature and love."
+            },
+            {
+                id: 14,
+                question: "Discuss the significance of the nightmare episode in the story.",
+                answer: "The nightmare episode is the turning point of the story. Before this event, Kezia views her father as a frightening figure and believes he does not love her. When she wakes up terrified from a nightmare, her father responds with kindness and concern. He carries her to his room, comforts her, and stays beside her until she feels safe. This experience allows Kezia to see a different side of him. She realizes that he is not a monster but a loving parent who cares deeply for her. The episode changes her perspective completely and helps resolve the misunderstanding between them."
+            },
+            {
+                id: 15,
+                question: "How does 'The Little Girl' explore the problem of misunderstanding between parents and children?",
+                answer: "The story explores how children often judge their parents based on limited observations rather than understanding their circumstances. Kezia interprets her father's strict behavior as a lack of love because she does not realize how hard he works for the family. His serious attitude creates fear and distance between them. As the story progresses, Kezia gains a deeper understanding of his responsibilities and sacrifices. The nightmare incident helps her recognize his affection and concern. Through this transformation, the author demonstrates that misunderstandings can be overcome through empathy, understanding, and closer emotional connections between parents and children."
+
+            }
+
+        ];
+
+        // About Writer Profile Object Asset
+        const writerBiographyDataAsset = {
+            name: "Katherine Mansfield",
+            timeline: "(1888–1923)",
+            biographyText: `
+        Katherine Mansfield (1888–1923) was a renowned New Zealand-born short story writer and one of the most influential modernist authors of the twentieth century. She is best known for her sensitive portrayal of human emotions, relationships, and everyday life.<br><br>
+
+        Mansfield's writing style is simple, realistic, and deeply psychological. Her stories often focus on the thoughts and feelings of ordinary people, especially children, and explore themes such as family relationships, loneliness, and personal growth.<br><br>
+
+        The story <i>“The Little Girl”</i> reflects her ability to understand a child's perspective. Through Kezia's experiences, she beautifully portrays the misunderstanding between a child and her father and highlights the importance of love, empathy, and understanding within a family.
+    `
+        };
+        // Summary Multi-Lingual Asset Data
+        const summaryDataAsset = {
+            en: `
+        <div class="summary-paragraph"><strong>Introduction:</strong> "The Little Girl" by Katherine Mansfield is a touching story about a young girl named Kezia and her relationship with her father. The story explores how children often misunderstand their parents and later realize the depth of their love and care.</div>
+
+        <div class="summary-paragraph"><strong>Kezia's Fear of Her Father:</strong> Kezia is afraid of her father because he is strict, serious, and rarely shows affection. She stammers whenever she speaks to him and sees him as a frightening figure. Unlike other children who enjoy spending time with their fathers, Kezia feels nervous and uncomfortable in his presence.</div>
+
+        <div class="summary-paragraph"><strong>The Pincushion Incident:</strong> Kezia's grandmother encourages her to make a pincushion as a birthday gift for her father. While filling it, Kezia tears up some papers she finds in his room, unaware that they contain an important speech. When her father discovers what happened, he becomes angry and punishes her. This incident increases her fear and makes her believe that he does not love her.</div>
+
+        <div class="summary-paragraph"><strong>The Macdonald Family:</strong> Kezia often watches the Macdonald family, where the father happily plays with his children. She envies their relationship and wishes that her own father were more affectionate and friendly. This comparison strengthens her belief that her father is cold and distant.</div>
+
+        <div class="summary-paragraph"><strong>The Turning Point:</strong> One night, Kezia wakes up frightened after a terrible nightmare. Since her mother is ill and her grandmother is away, her father takes care of her. He carries her to his room, comforts her, and lets her sleep beside him. For the first time, Kezia experiences his warmth, kindness, and protective nature.</div>
+
+        <div class="summary-paragraph"><strong>Conclusion:</strong> By the end of the story, Kezia realizes that her father truly loves her and works hard for the family's well-being. She understands that his strictness is not a sign of cruelty but a result of his responsibilities and exhaustion. The story highlights the importance of understanding, empathy, and the silent love that parents often express through their actions.</div>
+    `,
+
+            hi: `
+        <div class="summary-paragraph"><strong>परिचय:</strong> कैथरीन मैन्सफील्ड द्वारा लिखित "द लिटिल गर्ल" एक भावनात्मक कहानी है जो केज़िया नाम की एक छोटी लड़की और उसके पिता के संबंधों पर आधारित है। यह कहानी दिखाती है कि बच्चे अक्सर अपने माता-पिता को गलत समझ लेते हैं और बाद में उनके प्रेम और त्याग को पहचानते हैं।</div>
+
+        <div class="summary-paragraph"><strong>केज़िया का अपने पिता से डर:</strong> केज़िया अपने पिता से डरती है क्योंकि वे सख्त, गंभीर और कम बोलने वाले व्यक्ति हैं। वह उनके सामने हकलाने लगती है और उन्हें एक डरावने व्यक्ति के रूप में देखती है। उसे लगता है कि उसके पिता उससे प्रेम नहीं करते।</div>
+
+        <div class="summary-paragraph"><strong>पिनकुशन की घटना:</strong> केज़िया की दादी उसे अपने पिता के लिए जन्मदिन का उपहार बनाने की सलाह देती हैं। वह एक पिनकुशन बनाती है और उसे भरने के लिए अपने पिता के कमरे से कुछ कागज़ फाड़ देती है। बाद में पता चलता है कि वे उसके पिता के महत्वपूर्ण भाषण के कागज़ थे। पिता के क्रोधित होकर दंड देने से उसका डर और बढ़ जाता है।</div>
+
+        <div class="summary-paragraph"><strong>मैकडोनाल्ड परिवार:</strong> केज़िया पड़ोस के मैकडोनाल्ड परिवार को देखती है जहाँ पिता अपने बच्चों के साथ खेलते और हँसते हैं। वह उनकी खुशी देखकर ईर्ष्या करती है और चाहती है कि उसके पिता भी ऐसे ही प्रेमपूर्ण और मित्रवत हों।</div>
+
+        <div class="summary-paragraph"><strong>कहानी का मोड़:</strong> एक रात केज़िया को एक भयानक सपना आता है और वह डरकर जाग जाती है। उसकी माँ बीमार होती हैं और दादी घर पर नहीं होतीं। ऐसे समय में उसके पिता उसे अपने कमरे में ले जाते हैं, उसे सांत्वना देते हैं और अपने पास सुलाते हैं। इससे केज़िया पहली बार उनके स्नेह और सुरक्षा को महसूस करती है।</div>
+
+        <div class="summary-paragraph"><strong>निष्कर्ष:</strong> कहानी के अंत में केज़िया समझ जाती है कि उसके पिता उससे बहुत प्रेम करते हैं और परिवार के लिए कड़ी मेहनत करते हैं। वह महसूस करती है कि उनकी सख्ती प्रेम की कमी नहीं बल्कि जिम्मेदारियों का परिणाम है। कहानी परिवार में समझ, सहानुभूति और निस्वार्थ प्रेम के महत्व को दर्शाती है।</div>
+    `
+        };
+
+        // Runtime Global State Counters
+        let mcqActiveIndex = 0, mcqScoreCount = 0;
+        let tfActiveIndex = 0, tfScoreCount = 0;
+
+        // ==========================================
+        // DYNAMIC ENGINES INJECTION GENERATORS (JS DOM Render)
+        // ==========================================
+
+        // 1. Dynamic Injection Generator for Fill in the Blanks Matrix
+        function generateFillInBlanksInterface() {
+            const containerRoot = document.getElementById("fibArenaRoot");
+            let renderHTMLBuffer = "";
+
+            fillInBlanksDataAsset.forEach((item) => {
+                renderHTMLBuffer += `
+                    <div class="fill-card-box">
+                        <div class="quiz-question"><span>${item.id}.</span> ${item.question}</div>
+                        <div class="fill-row-alignment">
+                            <input type="text" class="fill-input" placeholder="Type your answer...">
+                            <button class="fill-reveal-btn" data-revealed="false" onclick="handleFillToggle(this, '${item.answer}')">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            containerRoot.innerHTML = renderHTMLBuffer;
+        }
+
+        // 2. Dynamic Injection Generator for Tap-To-Reveal Q&A Accordions
+        function generateConceptualQAMatrixInterface() {
+            const containerRoot = document.getElementById("qaMatrixRoot");
+            let renderHTMLBuffer = "";
+
+            conceptualQADataAsset.forEach((item) => {
+                renderHTMLBuffer += `
+                    <div class="qa-card" onclick="toggleAccordionMatrix(this)">
+                        <div class="qa-question">
+                            <div><span>Q${item.id}.</span> ${item.question}</div>
+                            <i class="fa-solid fa-chevron-down qa-chevron"></i>
+                        </div>
+                        <div class="qa-answer">${item.answer}</div>
+                    </div>
+                `;
+            });
+            containerRoot.innerHTML = renderHTMLBuffer;
+        }
+
+        // 3. Dynamic Injection Generator for Writer Biography Profile Panel
+        function generateWriterBiographyInterface() {
+            const containerRoot = document.getElementById("writerProfileRoot");
+
+            containerRoot.innerHTML = `
                 <div class="writer-avatar-circle">
                     <i class="fa-solid fa-feather-pointed"></i>
                 </div>
                 <div class="writer-bio-text">
-                    <h4>Katherine Mansfield</h4>
-                    <p>Katherine Mansfield (1888–1923) was a renowned New Zealand-born modernist writer and one of the
-                        most influential short story authors of the twentieth century. Her full name was Kathleen
-                        Mansfield Beauchamp. She is celebrated for her sensitive portrayal of human emotions, family
-                        relationships, childhood experiences, and everyday life. Mansfield's writing is known for its
-                        psychological depth, realistic characters, and vivid descriptions. Some of her most famous works
-                        include <i>The Garden Party</i>, <i>Bliss</i>, <i>Prelude</i>, and <i>The Doll's House</i>. The
-                        chapter <i>"The Little Girl"</i> beautifully reflects her ability to explore the feelings and
-                        perspectives of children while highlighting the importance of understanding and compassion
-                        within families.</p>
+                    <h4>${writerBiographyDataAsset.name} <span style="font-weight:500; font-size:12.5px; color:var(--muted);">${writerBiographyDataAsset.timeline}</span></h4>
+                    <p>${writerBiographyDataAsset.biographyText}</p>
                 </div>
-            </div>
-        </div>
-<div class="panel" style="grid-column: span 2;">
-            <div class="panel-header">
-                <div class="panel-title">
-                    <i class="fa-solid fa-key" style="color: var(--accent-orange);"></i>
-                    <h3>Official Answer Key</h3>
-                </div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 10px;">
-                
-                <div>
-                    <h4 style="font-size: 13.5px; border-bottom: 2px solid var(--line); padding-bottom: 4px; margin-bottom: 8px; color: var(--primary);"><i class="fa-solid fa-list-check"></i> MCQs</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; font-size: 12px; color: var(--muted);">
-                        <div><b>1.</b> Kezia</div>
-                        <div><b>2.</b> He was very strict</div>
-                        <div><b>3.</b> Talk to her father</div>
-                        <div><b>4.</b> A pin-cushion</div>
-                        <div><b>5.</b> Old newspapers</div>
-                        <div><b>6.</b> Office speech papers</div>
-                        <div><b>7.</b> She wanted paper scraps for the cushion</div>
-                        <div><b>8.</b> He beat her with a ruler</div>
-                        <div><b>9.</b> Cruel</div>
-                        <div><b>10.</b> The Macdonald family</div>
-                        <div><b>11.</b> Five</div>
-                        <div><b>12.</b> He played happily with his children</div>
-                        <div><b>13.</b> Kezia slept alone</div>
-                        <div><b>14.</b> She had a nightmare</div>
-                        <div><b>15.</b> Her father</div>
-                        <div><b>16.</b> He loved her and worked hard for the family</div>
-                        <div><b>17.</b> Office worker</div>
-                        <div><b>18.</b> A giant</div>
-                        <div><b>19.</b> Understanding parental love</div>
-                        <div><b>20.</b> Respectful and loving</div>
-                    </div>
-                </div>
+            `;
+        }
 
-                <div>
-                    <h4 style="font-size: 13.5px; border-bottom: 2px solid var(--line); padding-bottom: 4px; margin-bottom: 8px; color: var(--accent-green);"><i class="fa-solid fa-circle-check"></i> True / False</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; font-size: 12px; color: var(--muted);">
-                        <div><b>1.</b> True</div>
-                        <div><b>2.</b> True</div>
-                        <div><b>3.</b> False</div>
-                        <div><b>4.</b> True</div>
-                        <div><b>5.</b> True</div>
-                        <div><b>6.</b> False</div>
-                        <div><b>7.</b> True</div>
-                        <div><b>8.</b> False</div>
-                        <div><b>9.</b> True</div>
-                        <div><b>10.</b> True</div>
-                        <div><b>11.</b> True</div>
-                        <div><b>12.</b> True</div>
-                        <div><b>13.</b> False</div>
-                        <div><b>14.</b> True</div>
-                        <div><b>15.</b> True</div>
-                        <div><b>16.</b> True</div>
-                        <div><b>17.</b> False</div>
-                        <div><b>18.</b> True</div>
-                        <div><b>19.</b> True</div>
-                        <div><b>20.</b> True</div>
-                    </div>
-                </div>
+        // ==========================================
+        // SEPARATED INTERACTIVE QUIZ ENGINE ROUTERS
+        // ==========================================
 
-                <div>
-                    <h4 style="font-size: 13.5px; border-bottom: 2px solid var(--line); padding-bottom: 4px; margin-bottom: 8px; color: var(--accent-orange);"><i class="fa-solid fa-pen-clip"></i> Fill in the Blanks</h4>
-                    <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted);">
-                        <div><b>1.</b> Katherine Mansfield</div>
-                        <div><b>2.</b> Kezia</div>
-                        <div><b>3.</b> strict / harsh</div>
-                        <div><b>4.</b> giant</div>
-                        <div><b>5.</b> grandmother</div>
-                        <div><b>6.</b> birthday</div>
-                        <div><b>7.</b> pin-cushion</div>
-                        <div><b>8.</b> yellow silk</div>
-                        <div><b>9.</b> speech papers (documents)</div>
-                        <div><b>10.</b> scrap / stuffing</div>
-                        <div><b>11.</b> ruler</div>
-                        <div><b>12.</b> Macdonald</div>
-                        <div><b>13.</b> five</div>
-                        <div><b>14.</b> happily / joyfully</div>
-                        <div><b>15.</b> grandmother / mother</div>
-                        <div><b>16.</b> nightmare</div>
-                        <div><b>17.</b> butcher / knife</div>
-                        <div><b>18.</b> father</div>
-                        <div><b>19.</b> hard</div>
-                        <div><b>20.</b> big / loving</div>
-                    </div>
-                </div>
+        // MCQ Controller Engine
+        function renderMcqQuizArena() {
+            const root = document.getElementById("mcqArenaRoot");
+            if (mcqActiveIndex >= mcqQuizEngineData.length) {
+                root.innerHTML = `
+                    <div class="quiz-score-layout">
+                        <i class="fa-solid fa-trophy"></i>
+                        <h4>MCQs Completed!</h4>
+                        <div style="font-size: 20px; font-weight:800; color:var(--primary); margin:8px 0;">${mcqScoreCount} / ${mcqQuizEngineData.length}</div>
+                        <button class="quiz-next-action-btn" onclick="resetMcqEngine()" style="margin:10px auto 0 auto;"><i class="fa-solid fa-rotate-right"></i> Restart</button>
+                    </div>`;
+                return;
+            }
+            const data = mcqQuizEngineData[mcqActiveIndex];
+            let opts = "";
+            data.options.forEach((opt, idx) => {
+                opts += `<button class="quiz-opt-btn" onclick="validateMcqSelection(this, ${idx})">${opt} <i class="fa-solid fa-circle-notch" style="opacity:0;"></i></button>`;
+            });
+            root.innerHTML = `
+                <div class="quiz-meta-info"><span>MCQ MODE</span><span>Q: ${mcqActiveIndex + 1}/${mcqQuizEngineData.length}</span></div>
+                <div class="quiz-question-text"><strong>${mcqActiveIndex + 1}.</strong> ${data.question}</div>
+                <div class="quiz-options-wrapper">${opts}</div>
+                <div class="quiz-action-footer">
+                    <div class="quiz-feedback-banner" id="mcqFeedback"></div>
+                    <button class="quiz-next-action-btn" id="mcqNextBtn" style="display:none;" onclick="advanceMcqStep()">Next <i class="fa-solid fa-arrow-right"></i></button>
+                </div>`;
+        }
 
-            </div>
-        </div>
-      
-    </div>
+        function validateMcqSelection(btn, idx) {
+            const current = mcqQuizEngineData[mcqActiveIndex];
+            const all = btn.parentElement.querySelectorAll(".quiz-opt-btn");
+            all.forEach(b => b.style.pointerEvents = "none");
 
-    <script>
-        const summaryDataAsset = {
-            en: `
-        <div class="summary-paragraph"><strong>Introduction:</strong> "The Little Girl" by Katherine Mansfield is a touching story that explores the relationship between a young girl named Kezia and her father. The story highlights how children sometimes misunderstand their parents and fail to recognize the love hidden behind strict behavior.</div>
+            if (idx === current.correctIndex) {
+                btn.classList.add("correct-state");
+                btn.querySelector("i").className = "fa-solid fa-circle-check";
+                btn.querySelector("i").style.opacity = "1";
+                document.getElementById("mcqFeedback").innerHTML = "<span style='color:var(--accent-green);'>Sahi Jawab!</span>";
+                mcqScoreCount++;
+            } else {
+                btn.classList.add("wrong-state");
+                btn.querySelector("i").className = "fa-solid fa-circle-xmark";
+                btn.querySelector("i").style.opacity = "1";
+                all[current.correctIndex].classList.add("correct-state");
+                all[current.correctIndex].querySelector("i").className = "fa-solid fa-circle-check";
+                all[current.correctIndex].querySelector("i").style.opacity = "1";
+                document.getElementById("mcqFeedback").innerHTML = "<span style='color:var(--accent-red);'>Galat Jawab!</span>";
+            }
+            document.getElementById("mcqNextBtn").style.display = "flex";
+        }
 
-        <div class="summary-paragraph"><strong>Kezia's Fear of Her Father:</strong> Kezia was a timid and sensitive child who was afraid of her father. He was a strict, serious, and hardworking man who rarely expressed his emotions openly. Whenever he spoke to her, she became nervous and stammered. As a result, she believed that her father was harsh and did not love her.</div>
+        function advanceMcqStep() { mcqActiveIndex++; renderMcqQuizArena(); }
+        function resetMcqEngine() { mcqActiveIndex = 0; mcqScoreCount = 0; renderMcqQuizArena(); }
 
-        <div class="summary-paragraph"><strong>The Pin-Cushion Incident:</strong> Kezia's grandmother encouraged her to become closer to her father. To show her love, Kezia decided to make a pin-cushion as a birthday gift for him. While looking for material to fill it, she tore up some papers from her father's room, unaware that they contained an important speech he had prepared for work. When her father discovered this, he became angry and punished her with a ruler. This incident increased Kezia's fear and resentment toward him.</div>
+        // True / False Controller Engine
+        function renderTfQuizArena() {
+            const root = document.getElementById("tfArenaRoot");
+            if (tfActiveIndex >= tfQuizEngineData.length) {
+                root.innerHTML = `
+                    <div class="quiz-score-layout">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                        <h4>T/F Completed!</h4>
+                        <div style="font-size: 20px; font-weight:800; color:var(--accent-orange); margin:8px 0;">${tfScoreCount} / ${tfQuizEngineData.length}</div>
+                        <button class="quiz-next-action-btn" onclick="resetTfEngine()" style="margin:10px auto 0 auto; background:var(--accent-orange);"><i class="fa-solid fa-rotate-right"></i> Restart</button>
+                    </div>`;
+                return;
+            }
+            const data = tfQuizEngineData[tfActiveIndex];
+            let opts = "";
+            data.options.forEach((opt, idx) => {
+                opts += `<button class="quiz-opt-btn" onclick="validateTfSelection(this, ${idx})">${opt} <i class="fa-solid fa-circle-notch" style="opacity:0;"></i></button>`;
+            });
+            root.innerHTML = `
+                <div class="quiz-meta-info"><span>TRUE / FALSE</span><span>Q: ${tfActiveIndex + 1}/${tfQuizEngineData.length}</span></div>
+                <div class="quiz-question-text"><strong>${tfActiveIndex + 1}.</strong> ${data.question}</div>
+                <div class="quiz-options-wrapper" style="grid-template-columns: repeat(2, 1fr);">${opts}</div>
+                <div class="quiz-action-footer">
+                    <div class="quiz-feedback-banner" id="tfFeedback"></div>
+                    <button class="quiz-next-action-btn" id="tfNextBtn" style="display:none; background:var(--accent-orange);" onclick="advanceTfStep()">Next <i class="fa-solid fa-arrow-right"></i></button>
+                </div>`;
+        }
 
-        <div class="summary-paragraph"><strong>The Macdonald Family:</strong> Living next door was the Macdonald family. Mr. Macdonald was cheerful and affectionate toward his five children. He played with them and openly showed his love. Seeing this, Kezia wished that her own father would behave in a similar manner. She compared the two fathers and felt disappointed by her father's strict nature.</div>
+        function validateTfSelection(btn, idx) {
+            const current = tfQuizEngineData[tfActiveIndex];
+            const all = btn.parentElement.querySelectorAll(".quiz-opt-btn");
+            all.forEach(b => b.style.pointerEvents = "none");
 
-        <div class="summary-paragraph"><strong>The Night of the Nightmare:</strong> One night, when Kezia's mother was ill and her grandmother was away, she had to sleep alone. During the night, she woke up terrified after a frightening nightmare. Crying and trembling with fear, she called for help.</div>
+            if (idx === current.correctIndex) {
+                btn.classList.add("correct-state");
+                btn.querySelector("i").className = "fa-solid fa-circle-check";
+                btn.querySelector("i").style.opacity = "1";
+                document.getElementById("tfFeedback").innerHTML = "<span style='color:var(--accent-green);'>Sahi!</span>";
+                tfScoreCount++;
+            } else {
+                btn.classList.add("wrong-state");
+                btn.querySelector("i").className = "fa-solid fa-circle-xmark";
+                btn.querySelector("i").style.opacity = "1";
+                all[current.correctIndex].classList.add("correct-state");
+                all[current.correctIndex].querySelector("i").className = "fa-solid fa-circle-check";
+                all[current.correctIndex].querySelector("i").style.opacity = "1";
+                document.getElementById("tfFeedback").innerHTML = "<span style='color:var(--accent-red);'>Galat!</span>";
+            }
+            document.getElementById("tfNextBtn").style.display = "flex";
+        }
 
-        <div class="summary-paragraph"><strong>Father's Hidden Love:</strong> Hearing her cries, Kezia's father immediately came to her room. He picked her up, carried her to his bed, and comforted her until she felt safe again. For the first time, Kezia experienced her father's warmth and protection. She realized how hard he worked every day and understood that he loved her deeply, even though he did not express it openly.</div>
+        function advanceTfStep() { tfActiveIndex++; renderTfQuizArena(); }
+        function resetTfEngine() { tfActiveIndex = 0; tfScoreCount = 0; renderTfQuizArena(); }
 
-        <div class="summary-paragraph"><strong>Change in Kezia's Understanding:</strong> After this experience, Kezia's opinion of her father completely changed. She no longer saw him as a cruel giant. Instead, she recognized him as a caring and responsible parent who sacrificed his comfort for the happiness of his family.</div>
+        // ==========================================
+        // RUNTIME TOGGLE & INTERACTIVE UTILITY ACTIONS
+        // ==========================================
 
-        <div class="summary-paragraph"><strong>Conclusion:</strong> The story teaches that parents often express love in different ways. While some show affection openly, others demonstrate their love through hard work, sacrifice, and responsibility. "The Little Girl" emphasizes the importance of understanding family members and looking beyond outward appearances to recognize true love and care.</div>
-    `,
+        // Hide / Show Toggle Controller for Fill In Blanks
+        function handleFillToggle(buttonRef, actualAnswerValue) {
+            const baseRow = buttonRef.parentElement;
+            const inputField = baseRow.querySelector(".fill-input");
+            const icon = buttonRef.querySelector("i");
+            const isRevealed = buttonRef.getAttribute("data-revealed") === "true";
 
-            hi: `
-        <div class="summary-paragraph"><strong>परिचय:</strong> "The Little Girl" कैथरीन मैन्सफील्ड द्वारा लिखी गई एक भावनात्मक कहानी है। यह कहानी एक छोटी लड़की केज़िया और उसके पिता के बीच के संबंध को दर्शाती है। कहानी बताती है कि बच्चे अक्सर अपने माता-पिता को गलत समझ लेते हैं और उनके प्यार को पहचान नहीं पाते।</div>
+            if (!isRevealed) {
+                inputField.value = actualAnswerValue;
+                inputField.style.borderColor = "var(--accent-green)";
+                inputField.style.color = "var(--accent-green)";
+                inputField.style.fontWeight = "700";
+                buttonRef.setAttribute("data-revealed", "true");
+                buttonRef.style.background = "var(--accent-green)";
+                buttonRef.style.color = "#ffffff";
+                icon.className = "fa-solid fa-eye-slash";
+            } else {
+                inputField.value = "";
+                inputField.style.borderColor = "var(--line)";
+                inputField.style.color = "var(--text)";
+                inputField.style.fontWeight = "600";
+                buttonRef.setAttribute("data-revealed", "false");
+                buttonRef.style.background = "var(--primary-light)";
+                buttonRef.style.color = "var(--primary)";
+                icon.className = "fa-solid fa-eye";
+            }
+        }
 
-        <div class="summary-paragraph"><strong>केज़िया का अपने पिता से डर:</strong> केज़िया एक संवेदनशील और शर्मीली लड़की थी। उसके पिता बहुत सख्त, गंभीर और अनुशासित स्वभाव के थे। वह उनसे बात करने से डरती थी और उनके सामने घबरा जाती थी। इसलिए उसे लगता था कि उसके पिता उससे प्यार नहीं करते।</div>
+        // Tap to Reveal Accordion logic for Q&A Matrix
+        function toggleAccordionMatrix(cardElement) {
+            const answerContainer = cardElement.querySelector(".qa-answer");
+            const isAlreadyActive = cardElement.classList.contains("active-panel");
 
-        <div class="summary-paragraph"><strong>पिन-कुशन की घटना:</strong> केज़िया की दादी चाहती थीं कि वह अपने पिता के करीब आए। अपने पिता के जन्मदिन पर उपहार देने के लिए उसने एक पिन-कुशन बनाया। उसे भरने के लिए उसने कुछ कागज़ फाड़ दिए, लेकिन उसे नहीं पता था कि वे उसके पिता के महत्वपूर्ण भाषण के कागज़ थे। यह देखकर उसके पिता बहुत नाराज़ हुए और उसे दंड दिया। इससे केज़िया का डर और बढ़ गया।</div>
+            if (isAlreadyActive) {
+                answerContainer.style.display = "none";
+                cardElement.classList.remove("active-panel");
+            } else {
+                answerContainer.style.display = "block";
+                cardElement.classList.add("active-panel");
+            }
+        }
 
-        <div class="summary-paragraph"><strong>मैकडोनाल्ड परिवार:</strong> केज़िया के पड़ोस में मैकडोनाल्ड परिवार रहता था। श्री मैकडोनाल्ड अपने बच्चों के साथ खेलते, हँसते और खुलकर प्यार जताते थे। केज़िया उन्हें देखकर सोचती थी कि उसके पिता भी ऐसे ही होते। वह अपने पिता की तुलना उनसे करती थी और दुखी हो जाती थी।</div>
-
-        <div class="summary-paragraph"><strong>डरावना सपना:</strong> एक रात उसकी माँ बीमार थीं और दादी घर पर नहीं थीं। केज़िया को अकेले सोना पड़ा। रात में उसे एक भयानक सपना आया और वह डरकर रोने लगी।</div>
-
-        <div class="summary-paragraph"><strong>पिता का छिपा हुआ प्यार:</strong> उसकी आवाज़ सुनकर उसके पिता तुरंत उसके पास आए। उन्होंने उसे गोद में उठाया, अपने कमरे में ले गए और उसे तब तक सांत्वना दी जब तक वह शांत नहीं हो गई। पहली बार केज़िया ने अपने पिता के स्नेह और सुरक्षा को महसूस किया।</div>
-
-        <div class="summary-paragraph"><strong>केज़िया की सोच में बदलाव:</strong> उस रात के बाद केज़िया की अपने पिता के बारे में सोच बदल गई। उसे समझ आया कि उसके पिता उससे बहुत प्यार करते हैं। वे केवल अपनी भावनाएँ खुलकर व्यक्त नहीं कर पाते थे क्योंकि वे परिवार के लिए बहुत मेहनत करते थे।</div>
-
-        <div class="summary-paragraph"><strong>निष्कर्ष:</strong> कहानी का मुख्य संदेश यह है कि माता-पिता का प्यार अलग-अलग रूपों में दिखाई देता है। कुछ लोग प्यार को खुलकर व्यक्त करते हैं, जबकि कुछ अपने कर्तव्यों, त्याग और जिम्मेदारियों के माध्यम से प्यार दिखाते हैं। यह कहानी हमें अपने माता-पिता को समझने और उनके त्याग की सराहना करने की सीख देती है।</div>
-    `
-        };
-
+        // Chapter Summary Language Controls Switching Engine
         function switchSummaryLanguage(langKey, elementRef) {
             document.querySelectorAll(".lang-btn").forEach(btn => btn.classList.remove("active"));
             if (elementRef) elementRef.classList.add("active");
-
-            const viewport = document.getElementById("summaryViewPort");
-            viewport.innerHTML = summaryDataAsset[langKey] || summaryDataAsset['en'];
+            document.getElementById("summaryViewPort").innerHTML = summaryDataAsset[langKey] || summaryDataAsset['en'];
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            switchSummaryLanguage('en', null);
-        });
+        // Global Theme Engine Synchronization Syncing Loop
         function applyThemeFromBrainHub() {
-
-            const data = JSON.parse(
-                localStorage.getItem("brainhub.app.v2") || "{}"
-            );
-
+            const data = JSON.parse(localStorage.getItem("brainhub.app.v2") || "{}");
             const theme = data.theme || "light";
-
-            document.documentElement.dataset.theme =
-                theme;
-
-            const metaTheme = document.querySelector(
-                'meta[name="theme-color"]'
-            );
-
-            if (metaTheme) {
-                metaTheme.setAttribute(
-                    "content",
-                    theme === "dark"
-                        ? "#121722"
-                        : "#2563eb"
-                );
-            }
+            document.documentElement.dataset.theme = theme;
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) metaTheme.setAttribute("content", theme === "dark" ? "#121722" : "#ffffff");
         }
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            applyThemeFromBrainHub
-        );
+        // ==========================================
+        // INITIALIZATION EVENTS INITIALIZER
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            // First run structural languages & system view setups
+            switchSummaryLanguage('en', null);
+            applyThemeFromBrainHub();
+
+            // Invoke Dynamic Template Engine Injections 
+            generateFillInBlanksInterface();
+            generateConceptualQAMatrixInterface();
+            generateWriterBiographyInterface();
+
+            // Render Dynamic Sequential Arenas
+            renderMcqQuizArena();
+            renderTfQuizArena();
+        });
 
         window.addEventListener("storage", (e) => {
-            if (e.key === "brainhub.app.v2") {
-                applyThemeFromBrainHub();
-            }
+            if (e.key === "brainhub.app.v2") applyThemeFromBrainHub();
         });
-
-        /* Same tab sync */
         setInterval(applyThemeFromBrainHub, 500);
-        // Jab bhi theme switch logic trigger ho, tab ye niche ka logic chala dena:
-        function updateMetaThemeColor(isDark) {
-            const metaTheme = document.querySelectorAll('meta[name="theme-color"]');
-            metaTheme.forEach(meta => {
-                if (meta.matches('(prefers-color-scheme: dark)') || isDark) {
-                    // Agar dark mode hai
-                    if (isDark) meta.setAttribute('content', '#121722');
-                } else {
-                    // Agar light mode hai toh pure white dikhega
-                    meta.setAttribute('content', '#ffffff');
-                }
-            });
-        }
     </script>
 </body>
 
