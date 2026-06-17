@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>A Legend of the Northland - Brain Hub</title>
+    <title>Poem Hub - Brain Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="manifest" href="../../../../manifest.json">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#121722" media="(prefers-color-scheme: dark)">
@@ -29,7 +28,7 @@
             --radius: 16px;
             --radius-sm: 12px;
             --nav-h: 56px;
-
+            
             /* Poem Specific Adaptive Colors */
             --poem-odd: #17202a;
             --poem-even: #2563eb;
@@ -46,7 +45,7 @@
             --primary: #60a5fa;
             --primary-light: rgba(96, 165, 250, 0.1);
             --shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-
+            
             /* Dark Mode Poem Text colors */
             --poem-odd: #edf2f7;
             --poem-even: #60a5fa;
@@ -285,7 +284,7 @@
                 </div>
             </div>
             <div class="poem-content-box" id="poemVersesRoot">
-            </div>
+                </div>
         </div>
 
         <div class="panel">
@@ -300,7 +299,7 @@
                 </div>
             </div>
             <div class="central-idea-text" id="centralIdeaRoot">
-            </div>
+                </div>
         </div>
 
     </div>
@@ -310,76 +309,37 @@
         // DYNAMIC REPOSITORY FOR POEM
         // ==========================================
         const poemDataAsset = {
-            title: "A Legend of the Northland",
-            author: "Phoebe Cary",
+            title: "The Road Not Taken",
+            author: "Robert Frost",
             stanzas: [
                 [
-                    "Away, away in the Northland,",
-                    "Where the hours of the day are few,",
-                    "And the nights are so long in winter",
-                    "That they cannot sleep them through;"
+                    "Two roads diverged in a yellow wood,",
+                    "And sorry I could not travel both",
+                    "And be one traveler, long I stood",
+                    "And looked down one far as I could",
+                    "To where it bent in the undergrowth;"
                 ],
                 [
-                    "Where they harness the swift reindeer",
-                    "To the sledges when it snows;",
-                    "And the children look like bear’s cubs",
-                    "In their funny, furry clothes;"
-                ],
-                [
-                    "They tell them a curious story —",
-                    "I don’t believe ’tis true;",
-                    "And yet you may learn a lesson",
-                    "If I tell the tale to you."
-                ],
-                [
-                    "Once, when the good Saint Peter",
-                    "Lived in the world below,",
-                    "And walked about it, preaching,",
-                    "Just as he did, you know;"
-                ],
-                [
-                    "He came to the door of a cottage,",
-                    "In travelling round the earth,",
-                    "Where a little woman was making cakes,",
-                    "And baking them on the hearth;"
-                ],
-                [
-                    "And being faint with fasting,",
-                    "For the day was almost done,",
-                    "He asked her, from her store of cakes,",
-                    "To give him a single one."
-                ],
-                [
-                    "So she made a very little cake,",
-                    "But as it baking lay,",
-                    "She looked at it, and thought it large enough",
-                    "To keep for herself and say."
-                ],
-                [
-                    "And she kept it for herself, and Saint Peter",
-                    "Went on his way alone;",
-                    "And when he found she had been greedy,",
-                    "He changed her into a stone."
-                ],
-                [
-                    "And there she sits in the Northland snow",
-                    "All day and night alone,",
-                    "And she cannot bake any more cakes",
-                    "For now she is a stone."
+                    "Then took the other, as just as fair,",
+                    "And having perhaps the better claim,",
+                    "Because it was grassy and wanted wear;",
+                    "Though as for that the passing there",
+                    "Had worn them really about the same,"
                 ]
             ],
             centralIdea: {
-                en: "The poem teaches a moral lesson about greed and generosity. It tells a legend in which a woman is turned into a woodpecker (stone form in some versions) because of her selfishness. The poem emphasizes that greed is punished while kindness and sharing are rewarded.",
-                hi: "यह कविता लालच और उदारता पर एक नैतिक शिक्षा देती है। इसमें एक कहानी के माध्यम से बताया गया है कि लालच करने वाली महिला को सजा मिलती है और वह पत्थर बन जाती है। कविता यह संदेश देती है कि लालच बुरी चीज है और दयालुता तथा साझा करना अच्छा है।"
+                en: "The central idea of the poem revolves around the choices that we make in our lives and how they shape our destiny. Frost uses the metaphor of two diverging roads in a forest to represent the critical decision points where individuals must select one path over another, permanently impacting their future journeys.",
+                hi: "इस कविता का केंद्रीय विचार हमारे जीवन में किए जाने वाले विकल्पों (choices) और वे हमारे भाग्य को कैसे आकार देते हैं, इसके इर्द-गिर्द घूमता है। फ्रॉस्ट जंगल में दो अलग होने वाली सड़कों के रूपक (metaphor) का उपयोग करके उन महत्वपूर्ण निर्णय बिंदुओं को दर्शाते हैं जहां व्यक्तियों को एक रास्ते को दूसरे पर चुनना होता है, जो उनके भविष्य की यात्रा को हमेशा के लिए प्रभावित करता है।"
             }
         };
+
         // ==========================================
         // DYNAMIC DOM INJECTION INJECTOR
         // ==========================================
         function loadPoemEngine() {
             // Set Header fields
             document.getElementById("poemTitle").textContent = poemDataAsset.title;
-
+            
             // Default Central Idea Language Setup
             switchCentralIdeaLanguage('en', null);
 
